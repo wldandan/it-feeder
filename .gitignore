@@ -1,0 +1,9 @@
+build
+gradle
+.gradle
+.settings
+.classpath
+.project
+bin
+out/
+it-feeder.*
