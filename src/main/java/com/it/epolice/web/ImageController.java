@@ -1,6 +1,7 @@
 package com.it.epolice.web;
  
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.it.epolice.domain.Image;
 import com.it.epolice.service.ImageService;
 import com.it.epolice.sync.parser.ImageParser;
@@ -21,11 +22,12 @@ public class ImageController {
     ImageService imageService;
 
 	@RequestMapping(value="/syncRaw", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
-	public @ResponseBody String syncString(@RequestBody String request) throws Exception {
+	public @ResponseBody String syncString(@RequestBody String request){
 
         List<Image> images = new ImageParser().parse(request);
-		imageService.sync(images);
-        return new Gson().toJson(images.get(0));
+
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+        return gson.toJson(imageService.sync(images));
 	}
 
     //curl -XPOST http://localhost:8081/service/sync -H "Content-Type:application/json" -d '{ "name":"wang"}'

@@ -26,18 +26,9 @@ public class ImageParserTest {
         assertThat(images.size(), is(1));
 
         Image image = images.get(0);
-        assertThat(image.getName(), is("001"));
 
         assertThat(image.getVehicle().getNumber(), is("陕A01L01"));
         assertThat(image.getImageType(), is(ImageType.CROSS));
-
-    }
-
-    @Test
-    public void testEnumValues() throws Exception {
-//        assertNotNull(ImageType.valueOf("CROSS"));
-        assertNotNull(ImageType.valueOf("CROSS"));
-
 
     }
 

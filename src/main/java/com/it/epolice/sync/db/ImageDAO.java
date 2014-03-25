@@ -4,10 +4,14 @@ import com.it.epolice.domain.Image;
 import com.mongodb.Mongo;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.VersionHelper;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 public class ImageDAO extends BasicDAO<Image, ObjectId> {
 
@@ -22,9 +26,12 @@ public class ImageDAO extends BasicDAO<Image, ObjectId> {
     }
 
 
-    public void saveOrUpdate(Image image) {
+    public Boolean saveOrUpdate(Image image) {
+
         Query<Image> query = createQuery().filter("image_id", image.getImageId());
-        LOGGER.info("Saving image to database " + image.getName());
+        LOGGER.info("Saving image to database " + image.getTitle());
+        image.setUpdatedAt(new Date());
         getDatastore().updateFirst(query, image, true);
+        return true;
     }
 }

@@ -13,26 +13,48 @@ public class Image implements Serializable {
     @Id
     private ObjectId id;
 
+    @Indexed(unique = true)
     @Property("image_id")
     private String imageId;
 
     @Indexed(unique = true)
-    private String name;
+    private String title;
+
+    private String extension;
 
     @Transient
     private String group;
 
-    @Indexed(unique = true)
+    @Indexed
     @Property("captured_at")
     private Date capturedAt;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Indexed
+    @Property("updated_at")
+    private Date updatedAt;
+
 
     @Property("original_path")
     private String originalPath;
 
-
     @Property("distributed_path")
     private String distributedPath;
-
 
     @Embedded
     private Vehicle vehicle;
@@ -45,15 +67,22 @@ public class Image implements Serializable {
 
     private String description;
 
+    @Version
+    private Long lock;
 
     @Transient
     private String content;
 
-    @Version
-    private Long lock;
-
     public String getImageId() {
         return imageId;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 
     public void setImageId(String imageId) {
@@ -101,14 +130,6 @@ public class Image implements Serializable {
         return description;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Date getCapturedAt() {
         return capturedAt;
     }
@@ -136,5 +157,13 @@ public class Image implements Serializable {
     @Override
     public String toString() {
         return new Gson().toJson(this);
+    }
+
+    public Long getLock() {
+        return lock;
+    }
+
+    public void setLock(Long lock) {
+        this.lock = lock;
     }
 }

@@ -74,14 +74,14 @@ public class ImageFTPStore implements ImageStore {
     }
 
     @Override
-    public void start() throws Exception {
-        LOGGER.info("starting generate file");
+    public void start(){
+        LOGGER.info("connect to server");
 //        connect();
     }
 
     @Override
-    public void stop() throws Exception {
-        LOGGER.info("finishing generate file");
+    public void stop(){
+        LOGGER.info("disconnect ftp server");
 //        disconnect();
     }
 }
