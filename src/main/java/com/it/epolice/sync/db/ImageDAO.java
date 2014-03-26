@@ -27,9 +27,8 @@ public class ImageDAO extends BasicDAO<Image, ObjectId> {
 
 
     public Boolean saveOrUpdate(Image image) {
-
         Query<Image> query = createQuery().filter("image_id", image.getImageId());
-        LOGGER.info("Saving image to database " + image.getTitle());
+        LOGGER.info("Saving image " + image.getTitle() + "to database!");
         image.setUpdatedAt(new Date());
         getDatastore().updateFirst(query, image, true);
         return true;
