@@ -4,7 +4,7 @@ import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Indexed;
 
 @Embedded
-public class Geo {
+public class GeoLocation {
 
     @Indexed(unique = true)
     private Long longitude;

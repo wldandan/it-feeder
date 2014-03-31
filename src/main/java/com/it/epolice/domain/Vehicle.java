@@ -10,7 +10,10 @@ public class Vehicle implements Serializable{
 
     @Indexed(unique = true)
     private String number;
+
     private String color;
+
+    private String description;
 
     public String getNumber() {
         return number;
@@ -18,5 +21,9 @@ public class Vehicle implements Serializable{
 
     public String getColor() {
         return color;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

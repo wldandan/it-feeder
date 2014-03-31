@@ -2,7 +2,7 @@ package com.it.epolice.sync;
 
 
 import com.it.epolice.domain.Image;
-import com.it.epolice.domain.ImageStatus;
+import com.it.epolice.domain.PersistStatus;
 import com.it.epolice.sync.db.dao.ImageDAO;
 import com.it.epolice.sync.fs.ImageStore;
 import com.it.epolice.utils.ImageUtils;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 
 @Service
@@ -27,23 +28,23 @@ public class ImageService {
     @Autowired
     private ImageStore imageStore;
 
-    private ImageStatus sync(Image image) {
+    private PersistStatus sync(Image image) {
         try {
             if (!imageStore.generate(image)) {
-                return ImageStatus.UN_STORED;
+                return PersistStatus.UN_STORED;
             }
 
-            return imageDAO.saveOrUpdate(image)? ImageStatus.SAVED : ImageStatus.UN_SAVED;
+            return imageDAO.saveOrUpdate(image)? PersistStatus.SAVED : PersistStatus.UN_SAVED;
 
         } catch (Exception e) {
             LOGGER.error("sync image" + image.getImageId() + " failed");
-            return ImageStatus.FAILED;
+            return PersistStatus.FAILED;
         }
     }
 
-    public Map<String, ImageStatus> sync(List<Image> images){
+    public Map<String, PersistStatus> sync(List<Image> images){
 
-        Map<String, ImageStatus> results = newHashMap();
+        Map<String, PersistStatus> results = newHashMap();
 
         imageStore.start();
 
@@ -56,4 +57,8 @@ public class ImageService {
 
         return results;
     }
+
+    public List<Image> getImagesByCarNoAndDuration(){return newArrayList();}
+
+
 }

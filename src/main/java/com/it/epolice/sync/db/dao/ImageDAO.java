@@ -47,19 +47,16 @@ public class ImageDAO extends BasicDAO<Image, ObjectId> {
     }
 
 
-    public Boolean saveOrUpdate(Image value) {
-        Query<Image> query = createQuery().filter("image_id", value.getImageId());
-
-        Image image = get(value.getImageId());
-        if (null != image){
+    public Boolean saveOrUpdate(Image image) {
+        Query<Image> query = createQuery().filter("image_id", image.getImageId());
+        if (exists(query)){
             image.setUpdatedAt(new Date());
-            LOGGER.info("Updating image " + image.getTitle() + "to database!");
+            LOGGER.info("Updating existing image " + image.getTitle() + "to database!");
         }
         else{
-            image = value;
             image.setCreatedAt(new Date());
             image.setUpdatedAt(new Date());
-            LOGGER.info("Saving image " + image.getTitle() + "to database!");
+            LOGGER.info("Saving new image " + image.getTitle() + "to database!");
         }
         getDatastore().updateFirst(query, image, true);
         return true;

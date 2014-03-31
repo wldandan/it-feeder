@@ -1,7 +1,6 @@
 package com.it.epolice.domain;
 
 import com.google.gson.Gson;
-import com.sun.xml.internal.ws.api.PropertySet;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.*;
 
@@ -21,12 +20,6 @@ public class Image implements Serializable {
     @Indexed(unique = true)
     private String title;
 
-    @Property("created_at")
-    private Date createdAt;
-
-    @Property("updated_at")
-    private Date updatedAt;
-
     @Indexed
     @Property("captured_at")
     private Date capturedAt;
@@ -37,17 +30,19 @@ public class Image implements Serializable {
     @Property("distributed_path")
     private String distributedPath;
 
+    private String direction;
+
     @Embedded
     private Vehicle vehicle;
 
     @Embedded
-    private Geo geo;
+    private GeoLocation geoLocation;
 
     @Property("image_type")
     private ImageType imageType = ImageType.NONE;
 
-    @Property("image_status")
-    private ImageStatus imageStatus = ImageStatus.NONE;
+    @Property("persist_status")
+    private PersistStatus persistStatus = PersistStatus.NONE;
 
 
     @Property("violation_type")
@@ -66,8 +61,11 @@ public class Image implements Serializable {
     @Version
     private Long lock;
 
-    @Transient
-    private String content;
+    @Property("created_at")
+    private Date createdAt;
+
+    @Property("updated_at")
+    private Date updatedAt;
 
     public String getImageId() {
         return imageId;
@@ -196,5 +194,29 @@ public class Image implements Serializable {
 
     public String generateId(){
         return "";
+    }
+
+    public GeoLocation getGeoLocation() {
+        return geoLocation;
+    }
+
+    public void setGeoLocation(GeoLocation geoLocation) {
+        this.geoLocation = geoLocation;
+    }
+
+    public PersistStatus getPersistStatus() {
+        return persistStatus;
+    }
+
+    public void setPersistStatus(PersistStatus persistStatus) {
+        this.persistStatus = persistStatus;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 }

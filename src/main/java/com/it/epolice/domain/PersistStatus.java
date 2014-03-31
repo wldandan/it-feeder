@@ -1,5 +1,5 @@
 package com.it.epolice.domain;
 
-public enum ImageStatus {
+public enum PersistStatus {
     UN_STORED, UN_SAVED, SAVED, FAILED, NONE
 }
