@@ -1,8 +1,5 @@
 package com.it.epolice.domain;
 
-/**
- * Created by leiwang on 3/25/14.
- */
 public enum ImageStatus {
-    STORED, SAVED, FAILED, NONE
+    UN_STORED, UN_SAVED, SAVED, FAILED, NONE
 }

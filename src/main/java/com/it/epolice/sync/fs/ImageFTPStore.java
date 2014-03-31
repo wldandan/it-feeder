@@ -1,6 +1,7 @@
 package com.it.epolice.sync.fs;
 
 import com.it.epolice.domain.Image;
+import com.it.epolice.utils.ImageUtils;
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -69,6 +70,8 @@ public class ImageFTPStore implements ImageStore {
     @Override
     public Boolean generate(Image image) throws Exception {
 //        downloadFile(image.getOriginalPath(), image.getDistributedPath());
+        Thread.sleep(1000);
+        image.setDistributedPath(ImageUtils.generateDistributedPath(image));
         LOGGER.info("downloading file " + image.getOriginalPath() + " to " + image.getDistributedPath());
         return true;
     }

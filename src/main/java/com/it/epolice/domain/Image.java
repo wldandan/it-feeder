@@ -1,6 +1,7 @@
 package com.it.epolice.domain;
 
 import com.google.gson.Gson;
+import com.sun.xml.internal.ws.api.PropertySet;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.*;
 
@@ -20,35 +21,15 @@ public class Image implements Serializable {
     @Indexed(unique = true)
     private String title;
 
-    private String extension;
+    @Property("created_at")
+    private Date createdAt;
 
-    @Transient
-    private String group;
+    @Property("updated_at")
+    private Date updatedAt;
 
     @Indexed
     @Property("captured_at")
     private Date capturedAt;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    @Indexed
-    @Property("updated_at")
-    private Date updatedAt;
-
 
     @Property("original_path")
     private String originalPath;
@@ -59,13 +40,28 @@ public class Image implements Serializable {
     @Embedded
     private Vehicle vehicle;
 
+    @Embedded
+    private Geo geo;
+
     @Property("image_type")
     private ImageType imageType = ImageType.NONE;
+
+    @Property("image_status")
+    private ImageStatus imageStatus = ImageStatus.NONE;
+
 
     @Property("violation_type")
     private ViolationType violationType = ViolationType.NONE;
 
     private String description;
+
+    private String extension;
+
+    @Indexed
+    private boolean deleted;
+
+    @Indexed
+    private boolean expired;
 
     @Version
     private Long lock;
@@ -77,24 +73,8 @@ public class Image implements Serializable {
         return imageId;
     }
 
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
-
     public void setImageId(String imageId) {
         this.imageId = imageId;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
     }
 
     public void setVehicle(Vehicle vehicle) {
@@ -165,5 +145,56 @@ public class Image implements Serializable {
 
     public void setLock(Long lock) {
         this.lock = lock;
+    }
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getExtension() {
+        return (null == extension) ? "JPG" : extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String generateId(){
+        return "";
     }
 }

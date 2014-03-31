@@ -3,7 +3,7 @@ package com.it.epolice.web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.it.epolice.domain.Image;
-import com.it.epolice.service.ImageService;
+import com.it.epolice.sync.ImageService;
 import com.it.epolice.sync.parser.ImageParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

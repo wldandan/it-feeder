@@ -25,7 +25,7 @@
         </property>
     </bean>
 
-    <bean id="imageDAO" class="com.it.epolice.sync.db.ImageDAO">
+    <bean id="imageDAO" class="com.it.epolice.sync.db.dao.ImageDAO">
         <constructor-arg name="mongo" ref="mongo"></constructor-arg>
         <constructor-arg name="morphia" ref="morphia"></constructor-arg>
         <constructor-arg name="dbName" value="it"></constructor-arg>

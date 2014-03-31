@@ -1,10 +1,11 @@
-package com.it.epolice.service;
+package com.it.epolice.sync;
 
 
 import com.it.epolice.domain.Image;
 import com.it.epolice.domain.ImageStatus;
-import com.it.epolice.sync.db.ImageDAO;
+import com.it.epolice.sync.db.dao.ImageDAO;
 import com.it.epolice.sync.fs.ImageStore;
+import com.it.epolice.utils.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,10 @@ public class ImageService {
     private ImageStatus sync(Image image) {
         try {
             if (!imageStore.generate(image)) {
-                return ImageStatus.FAILED;
+                return ImageStatus.UN_STORED;
             }
 
-            return imageDAO.saveOrUpdate(image)? ImageStatus.SAVED : ImageStatus.STORED;
+            return imageDAO.saveOrUpdate(image)? ImageStatus.SAVED : ImageStatus.UN_SAVED;
 
         } catch (Exception e) {
             LOGGER.error("sync image" + image.getImageId() + " failed");
@@ -47,7 +48,7 @@ public class ImageService {
         imageStore.start();
 
         for (Image image : images) {
-            image.setDistributedPath("/tmp/"+image.getImageId()+image.getExtension());
+            image.setDistributedPath(ImageUtils.generateDistributedPath(image));
             results.put(image.getImageId(), sync(image));
         }
 
