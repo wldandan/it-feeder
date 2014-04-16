@@ -1,8 +1,6 @@
 package com.it.epolice.sync.db;
 
-import com.mongodb.Mongo;
-import com.mongodb.MongoOptions;
-import com.mongodb.ServerAddress;
+import com.mongodb.*;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
@@ -12,7 +10,7 @@ import java.util.List;
 public class MongoFactoryBean extends AbstractFactoryBean<Mongo> {
   
     private List<ServerAddress> replicaSetSeeds = new ArrayList<ServerAddress>();
-    private MongoOptions mongoOptions;
+    private MongoClientOptions mongoOptions;
   
     @Override  
     public Class<?> getObjectType() {  
@@ -20,14 +18,15 @@ public class MongoFactoryBean extends AbstractFactoryBean<Mongo> {
     }  
   
     @Override  
-    protected Mongo createInstance() throws Exception {  
+    protected Mongo createInstance() throws Exception {
         if (replicaSetSeeds.size() > 0) {  
             if (mongoOptions != null) {  
-                return new Mongo(replicaSetSeeds, mongoOptions);  
+                return new MongoClient(replicaSetSeeds, mongoOptions);
+
             }  
-            return new Mongo(replicaSetSeeds);  
+            return new MongoClient(replicaSetSeeds);
         }  
-        return new Mongo();  
+        return new MongoClient();
     }  
   
     public void setMultiAddress(String[] serverAddresses) {  

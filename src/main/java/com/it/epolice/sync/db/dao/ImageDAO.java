@@ -2,6 +2,8 @@ package com.it.epolice.sync.db.dao;
 
 import com.google.common.base.Throwables;
 import com.it.epolice.domain.Image;
+import com.it.epolice.domain.ImageStatus;
+import com.it.epolice.sync.ImageHandler;
 import com.mongodb.Mongo;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.bson.types.ObjectId;
@@ -15,12 +17,22 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
-public class ImageDAO extends BasicDAO<Image, ObjectId> {
+public class ImageDAO extends BasicDAO<Image, ObjectId> implements ImageHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageDAO.class);
 
     public ImageDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
+    }
+
+    @Override
+    public Boolean handle(Image image) {
+        return saveOrUpdate(image);
+    }
+
+    @Override
+    public int getSuccessCode() {
+        return ImageStatus.SAVED.getCode();
     }
 
     public Image get(String imageId) {
@@ -67,6 +79,10 @@ public class ImageDAO extends BasicDAO<Image, ObjectId> {
         UpdateOperations<Image> update = createUpdateOperations();
         update.set("deleted", true);
         updateFirst(query, update);
+    }
+
+    public Query<Image> queryImages(){
+        return createQuery();
     }
 
 }

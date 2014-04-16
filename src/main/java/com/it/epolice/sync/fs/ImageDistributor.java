@@ -1,31 +1,38 @@
 package com.it.epolice.sync.fs;
 
 import com.it.epolice.domain.Image;
+import com.it.epolice.domain.ImageStatus;
+import com.it.epolice.sync.ImageHandler;
 import com.it.epolice.utils.ImageUtils;
 import org.apache.commons.net.PrintCommandListener;
-import org.apache.commons.net.ftp.*;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class ImageDistributor implements Distributor {
+public class ImageDistributor implements Distributor, ImageHandler {
 
     private final String pwd;
     private final String host;
     private final String user;
     private final FTPClient ftpClient;
+    private final String distributionPath;
 
     private static String encoding = System.getProperty("file.encoding");
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ImageDistributor.class);
- 
-    public ImageDistributor(String host, String user, String pwd, FTPClient ftpClient) throws Exception {
+
+    public ImageDistributor(String host, String user, String pwd, FTPClient ftpClient, String distributionPath) throws Exception {
         this.host = host;
         this.user =user;
         this.pwd = pwd;
         this.ftpClient = ftpClient;
+        this.distributionPath = distributionPath;
 
     }
 
@@ -65,7 +72,6 @@ public class ImageDistributor implements Distributor {
         ftpClient.setControlEncoding(encoding);
         ftpClient.enterLocalPassiveMode();
         ftpClient.setAutodetectUTF8(true);
-
     }
 
     private void initConnection() throws IOException {
@@ -90,18 +96,21 @@ public class ImageDistributor implements Distributor {
         showServerReply(ftpClient);
 
         if (!success) {
-            LOGGER.error("Can not login in server with User" + user);
-            throw new IOException("Can not login in server with User" + user);
+            LOGGER.error("Can not login in server with User " + user);
+            throw new IOException("Can not login in server with User " + user);
         }
-        LOGGER.info("Login ftp server " + host + " with " + user + "successfully!");
+        LOGGER.info("Login ftp server " + host + " with " + user + " successfully!");
     }
 
     @Override
     public Boolean distribute(Image image) throws Exception {
-        LOGGER.info("started distribute file from " + image.getPath() + " to " + image.getDistributedPath());
+
+        image.setDistributedPath(this.distributionPath + "/" + image.getImageId() + "." + image.getImageExt());
+
+        LOGGER.info("started distribute file from " + image.getSource() + " to " + image.getDistributedPath());
         connect();
         downloadFile(image.getPath(), image.getDistributedPath());
-        LOGGER.info("finished distribute file from " + image.getPath() + " to " + image.getDistributedPath());
+        LOGGER.info("finished distribute file from " + image.getSource() + " to " + image.getDistributedPath());
         image.setDistributedPath(ImageUtils.generateDistributedPath(image));
 
         return true;
@@ -127,5 +136,15 @@ public class ImageDistributor implements Distributor {
     public void stop(){
         LOGGER.info("disconnect from ftp server -" + this.host);
 //        disconnect();
+    }
+
+    @Override
+    public Boolean handle(Image image) throws Exception {
+        return this.distribute(image);
+    }
+
+    @Override
+    public int getSuccessCode() {
+        return ImageStatus.DISTRIBUTED.getCode();
     }
 }

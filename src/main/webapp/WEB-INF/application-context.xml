@@ -9,6 +9,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
+    <import resource="mongo-context.xml"/>
 
     <context:component-scan base-package="com.it.epolice"/>
 
@@ -33,12 +34,32 @@
 
     <bean id="ftpClient" class="org.apache.commons.net.ftp.FTPClient"/>
 
-    <bean id="imageStore" class="com.it.epolice.sync.fs.ImageFTPStore">
+    <bean id="imageDistributor" class="com.it.epolice.sync.fs.ImageDistributor">
         <constructor-arg name="host" value="127.0.0.1"/>
-        <constructor-arg name="user" value="root"/>
-        <constructor-arg name="pwd" value="root"/>
+        <constructor-arg name="user" value="it"/>
+        <constructor-arg name="pwd" value="it"/>
         <constructor-arg name="ftpClient" ref="ftpClient"/>
+        <constructor-arg name="distributionPath" value="/tmp/image"/>
     </bean>
+
+    <bean id="imageIndex" class="com.it.epolice.sync.solr.SolrIndexingService">
+        <constructor-arg name="serverUrl" value="http://localhost:8984/solr"/>
+        <constructor-arg name="builder" ref="solrBuilder"/>
+    </bean>
+
+
+    <bean id="imageService" class="com.it.epolice.sync.ImageService">
+        <constructor-arg name="handlers">
+            <list>
+                <ref bean="imageDistributor"/>
+                <ref bean="imageDAO"/>
+                <ref bean="imageIndex"/>
+            </list>
+
+        </constructor-arg>
+    </bean>
+
+    <bean id="solrBuilder" class="com.it.epolice.sync.solr.SolrDocumentBuilder"/>
 
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <property name="messageConverters">

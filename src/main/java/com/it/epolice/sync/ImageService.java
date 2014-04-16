@@ -1,10 +1,10 @@
 package com.it.epolice.sync;
 
 
-import com.it.epolice.domain.Image;
-import com.it.epolice.domain.PersistStatus;
+import com.it.epolice.domain.*;
 import com.it.epolice.sync.db.dao.ImageDAO;
-import com.it.epolice.sync.fs.ImageStore;
+import com.it.epolice.sync.fs.Distributor;
+import com.it.epolice.sync.solr.SolrIndexingService;
 import com.it.epolice.utils.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,43 +22,38 @@ public class ImageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
 
-    @Autowired
-    private ImageDAO imageDAO;
+    private List<ImageHandler> handlers = newArrayList();
 
-    @Autowired
-    private ImageStore imageStore;
-
-    private PersistStatus sync(Image image) {
-        try {
-            if (!imageStore.generate(image)) {
-                return PersistStatus.UN_STORED;
-            }
-
-            return imageDAO.saveOrUpdate(image)? PersistStatus.SAVED : PersistStatus.UN_SAVED;
-
-        } catch (Exception e) {
-            LOGGER.error("sync image" + image.getImageId() + " failed");
-            return PersistStatus.FAILED;
-        }
+    public ImageService(List<ImageHandler> handlers) {
+        this.handlers = handlers;
     }
 
-    public Map<String, PersistStatus> sync(List<Image> images){
+    private Integer sync(Image image){
+        Integer statusCode = 0;
 
-        Map<String, PersistStatus> results = newHashMap();
+        for (ImageHandler imageHandler : handlers) {
+            try {
+                if (imageHandler.handle(image)){
+                    statusCode +=  imageHandler.getSuccessCode();
+                }
+            } catch (Exception e) {
+                LOGGER.warn("There is an error when handle image " + image.getImageId() + "[" + image.getSource() + "]");
+                return statusCode;
+            }
+        }
+        return statusCode;
+    }
 
-        imageStore.start();
+    public Map<String, Integer> sync(List<Image> images){
+        Map<String, Integer> results = newHashMap();
 
-        for (Image image : images) {
-            image.setDistributedPath(ImageUtils.generateDistributedPath(image));
+        for (Image image :images) {
             results.put(image.getImageId(), sync(image));
         }
-
-        imageStore.stop();
-
         return results;
     }
 
-    public List<Image> getImagesByCarNoAndDuration(){return newArrayList();}
-
-
+    public List<Image> getImages(){
+        return ((ImageDAO)handlers.get(1)).queryImages().asList();
+    }
 }

@@ -6,6 +6,6 @@ import java.lang.Boolean;
 
 public interface ImageHandler {
 
-    public Boolean handle(Image image);
+    public Boolean handle(Image image) throws Exception;
     public int getSuccessCode();
 }

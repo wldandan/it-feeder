@@ -1,4 +1,4 @@
-e-ploice system
+IT-Feeder
 =====================
 
 ######Setup
@@ -13,8 +13,8 @@ e-ploice system
 -------
     ./gradlew jetyRun 
 
-
-
 ######Others
 --------
-* install pureFTPManager to setup ftp environment
+* Install pureFTPManager to setup ftp environment
+* Retrieve Image Lists(GET): http://localhost:8090/image/list
+* Append images to backend(POST): http://localhost:8090/image/syncRaw

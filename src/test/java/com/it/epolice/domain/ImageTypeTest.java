@@ -35,10 +35,6 @@ public class ImageTypeTest {
         System.out.println(System.nanoTime());
         System.out.println(System.nanoTime());
         System.out.println(System.nanoTime());
-
-//        System.out.println(UUID.fromString("机号019车道A12014年03月13日08时44分01秒R004D0H3T标准车牌C蓝底白字P赣D33301驶向南至北违章闯红灯时速17公里坐标(X1425Y127).JPG"));
-//
-//        System.out.println(UUID.fromString("机号019车道A12014年03月13日08时45分53秒R036D0H3T标准车牌C蓝底白字P赣D27509驶向南至北违章闯红灯时速16公里坐标(X1574Y99)_S.JPG"));
 //        System.out.println(UUID.fromString("机号019车道A12014年03月13日08时45分53秒R036D0H3T标准车牌C蓝底白字P赣D27509驶向南至北违章闯红灯时速16公里坐标(X1574Y99).JPG"));
 
     }

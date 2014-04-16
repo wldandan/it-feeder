@@ -1,6 +1,7 @@
 package com.it.epolice.sync.parser;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Strings;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.it.epolice.domain.Image;

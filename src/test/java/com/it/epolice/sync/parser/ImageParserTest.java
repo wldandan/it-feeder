@@ -7,13 +7,10 @@ import com.it.epolice.domain.Image;
 import com.it.epolice.domain.ImageType;
 import com.it.epolice.domain.ViolationType;
 import com.it.epolice.utils.ImageUtils;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -61,9 +58,5 @@ public class ImageParserTest {
         String json = Resources.toString(Resources.getResource("request-image.json"), Charsets.UTF_8);
         List<Image> images = new ImageParser().parse(json);
         assertThat(images.size() > 0, is(true));
-
-        Image image = images.get(0);
-
-        System.out.println( new Gson().toJson(image));
     }
 }
