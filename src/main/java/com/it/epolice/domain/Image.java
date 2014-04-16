@@ -24,8 +24,8 @@ public class Image implements Serializable {
     @Property("captured_at")
     private Date capturedAt;
 
-    @Property("original_path")
-    private String originalPath;
+    @Property("path")
+    private String path;
 
     @Property("distributed_path")
     private String distributedPath;
@@ -41,8 +41,8 @@ public class Image implements Serializable {
     @Property("image_type")
     private ImageType imageType = ImageType.NONE;
 
-    @Property("persist_status")
-    private PersistStatus persistStatus = PersistStatus.NONE;
+    @Property("image_handle_status")
+    private Integer imageHandleStatus = 0;
 
 
     @Property("violation_type")
@@ -116,12 +116,12 @@ public class Image implements Serializable {
         this.capturedAt = capturedAt;
     }
 
-    public String getOriginalPath() {
-        return originalPath;
+    public String getPath() {
+        return path;
     }
 
-    public void setOriginalPath(String originalPath) {
-        this.originalPath = originalPath;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getDistributedPath() {
@@ -204,19 +204,19 @@ public class Image implements Serializable {
         this.geoLocation = geoLocation;
     }
 
-    public PersistStatus getPersistStatus() {
-        return persistStatus;
-    }
-
-    public void setPersistStatus(PersistStatus persistStatus) {
-        this.persistStatus = persistStatus;
-    }
-
     public String getDirection() {
         return direction;
     }
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public Integer getImageHandleStatus() {
+        return imageHandleStatus;
+    }
+
+    public void setImageHandleStatus(Integer imageHandleStatus) {
+        this.imageHandleStatus = imageHandleStatus;
     }
 }
