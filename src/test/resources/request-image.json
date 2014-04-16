@@ -2,47 +2,30 @@
     {
         "image_id": "13698728",
         "title": "RX09D1H1驶向北至南违章超速时速61公里",
-        "group": "111",
-        "device_no": "019",
-        "extension": "JPG",
-        "description": "机号017车道B12014年03月13日01时30分30秒RX09D1H1驶向北至南违章超速时速61公里_S",
-        "original_path": "ftp://10.29.1.9/test.jpg",
+        "device_id": "019",
+        "land_id": "A1",
+        "image_ext": "JPG",
+        "violation_type": "OVER_SPEED",
+        "image_type": "CROSS",
+        "captured_at": "2014年03月13日01时30分30秒",
+        "description": "机号017车道B12014年03月13日01时30分30秒RX09D1H1驶向北至南违章超速时速61公里_S.JPG",
+        "source":{
+            "protocol": "ftp",
+            "host":"127.0.0.1",
+            "port": 21,
+            "path": "/2014年03月13日卡口/C017图片目录/违章图片目录/机号017车道B12014年03月13日01时30分30秒RX09D1H1驶向北至南违章超速时速61公里_S.JPG"
+        },
 
         "vehicle": {
             "number": "陕A01L01",
             "color": "黑",
-            "description": "标准车牌C蓝底白字"
+            "description": "标准车牌C蓝底白字",
+            "speed": 61,
+            "unit": "公里/时"
         },
 
-        "violation_type": "OVER_SPEED",
-        "image_type": "CROSS",
-        "captured_at": "2014-03-05T03:46:56Z",
-        "direction": "从南至北",
-        "geo_location": {
-            "latitude": 1574,
-            "longitude": 99
-        }
-    },
-    {
-        "image_id": "13698729",
-        "title": "RX09D1H1驶向北至南违章超速时速61公里",
-        "group": "111",
-        "device_no": "019",
-        "extension": "JPG",
-        "description": "机号017车道B12014年03月13日01时30分30秒RX09D1H1驶向北至南违章超速时速61公里",
-        "original_path": "ftp://10.29.1.9/test2.jpg",
-
-        "vehicle": {
-            "number": "陕A01L02",
-            "color": "黑",
-            "number_type": "标准车牌C蓝底白字"
-        },
-        "direction": "从南至北",
-        "violation_type": "OVER_SPEED",
-        "image_type": "CROSS",
-        "captured_at": "2014-03-04T03:46:56Z",
-        "from_to": "从南至北",
-        "geo_location": {
+        "geo": {
+            "direction": "从南至北",
             "latitude": 1574,
             "longitude": 99
         }

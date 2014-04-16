@@ -21,42 +21,51 @@ public class Image implements Serializable {
     private String title;
 
     @Indexed
+    @Property("device_id")
+    private String deviceId;
+
+    @Indexed
+    @Property("land_id")
+    private String landId;
+
+    @Transient
+    private String imageExt;
+
+    @Property("image_type")
+    private ImageType imageType = ImageType.NONE;
+
+    @Property("violation_type")
+    private ViolationType violationType = ViolationType.NONE;
+
+    @Indexed
     @Property("captured_at")
     private Date capturedAt;
 
-    @Property("path")
-    private String path;
+    private String description;
 
-    @Property("distributed_path")
-    private String distributedPath;
-
-    private String direction;
+    @Embedded
+    private Source source;
 
     @Embedded
     private Vehicle vehicle;
 
     @Embedded
-    private GeoLocation geoLocation;
-
-    @Property("image_type")
-    private ImageType imageType = ImageType.NONE;
+    private Geo geo;
 
     @Property("image_handle_status")
     private Integer imageHandleStatus = 0;
 
-
-    @Property("violation_type")
-    private ViolationType violationType = ViolationType.NONE;
-
-    private String description;
-
-    private String extension;
+    @Property("distributed_path")
+    private String distributedPath;
 
     @Indexed
     private boolean deleted;
 
     @Indexed
     private boolean expired;
+
+    @Indexed
+    private boolean qualified;
 
     @Version
     private Long lock;
@@ -116,14 +125,6 @@ public class Image implements Serializable {
         this.capturedAt = capturedAt;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
     public String getDistributedPath() {
         return distributedPath;
     }
@@ -160,14 +161,6 @@ public class Image implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public String getExtension() {
-        return (null == extension) ? "JPG" : extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -192,24 +185,12 @@ public class Image implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public String generateId(){
-        return "";
+    public Geo getGeo() {
+        return geo;
     }
 
-    public GeoLocation getGeoLocation() {
-        return geoLocation;
-    }
-
-    public void setGeoLocation(GeoLocation geoLocation) {
-        this.geoLocation = geoLocation;
-    }
-
-    public String getDirection() {
-        return direction;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
+    public void setGeo(Geo geo) {
+        this.geo = geo;
     }
 
     public Integer getImageHandleStatus() {
@@ -219,4 +200,49 @@ public class Image implements Serializable {
     public void setImageHandleStatus(Integer imageHandleStatus) {
         this.imageHandleStatus = imageHandleStatus;
     }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getLandId() {
+        return landId;
+    }
+
+    public void setLandId(String landId) {
+        this.landId = landId;
+    }
+
+    public String getImageExt() {
+        return imageExt;
+    }
+
+    public void setImageExt(String imageExt) {
+        this.imageExt = imageExt;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public boolean isQualified() {
+        return qualified;
+    }
+
+    public void setQualified(boolean qualified) {
+        this.qualified = qualified;
+    }
+
+    public String getPath(){
+        return getSource().getPath();
+    }
+
 }

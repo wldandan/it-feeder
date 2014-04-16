@@ -4,13 +4,15 @@ import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Indexed;
 
 @Embedded
-public class GeoLocation {
+public class Geo {
 
     @Indexed(unique = true)
     private Long longitude;
 
     @Indexed(unique = true)
     private Long latitude;
+
+    private String direction;
 
     public Long getLongitude() {
         return longitude;
@@ -26,5 +28,13 @@ public class GeoLocation {
 
     public void setLatitude(Long latitude) {
         this.latitude = latitude;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 }

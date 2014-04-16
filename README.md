@@ -1,18 +1,20 @@
 e-ploice system
 =====================
 
-Setup
+######Setup
 -------
     ./gradlew idea
 
-
-Build
+######Build
 --------
-
     ./gradlew war
-    
 
-Running
+######Running
 -------
     ./gradlew jetyRun 
-    
+
+
+
+######Others
+--------
+* install pureFTPManager to setup ftp environment

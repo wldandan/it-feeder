@@ -1,13 +1,14 @@
 package com.it.epolice.sync.parser;
 
-import com.google.common.io.Resources;
 import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.it.epolice.domain.Image;
 import com.it.epolice.domain.ImageType;
-import com.it.epolice.domain.PersistStatus;
 import com.it.epolice.domain.ViolationType;
+import com.it.epolice.utils.ImageUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -15,7 +16,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -34,19 +34,25 @@ public class ImageParserTest {
         assertThat(image.getVehicle().getNumber(), is("陕A01L01"));
         assertThat(image.getVehicle().getColor(), is("黑"));
         assertThat(image.getVehicle().getDescription(), is("标准车牌C蓝底白字"));
+        assertThat(image.getVehicle().getSpeed(), is(61));
+        assertThat(image.getVehicle().getUnit(), is("公里/时"));
 
-        assertThat(image.getDirection(),is("从南至北"));
-        //assertThat(image.getCapturedAt().toString(),is("2014-03-05T03:46:56Z"));
+        assertThat(image.getSource().getHost(), is("127.0.0.1"));
+        assertThat(image.getSource().getPort(), is(21));
+        assertThat(image.getSource().getProtocol(), is("ftp"));
+        assertThat(image.getSource().getPath(), is("/2014年03月13日卡口/C017图片目录/违章图片目录/机号017车道B12014年03月13日01时30分30秒RX09D1H1驶向北至南违章超速时速61公里_S.JPG"));
 
         assertThat(image.getImageType(), is(ImageType.CROSS));
         assertThat(image.getViolationType(), is(ViolationType.OVER_SPEED));
+        assertThat(image.getImageExt(), is("JPG"));
 
-        assertThat(image.getGeoLocation().getLatitude(), is(1574L));
-        assertThat(image.getGeoLocation().getLongitude(), is(99L));
+        assertThat(image.getGeo().getDirection(), is("从南至北"));
+        assertThat(image.getGeo().getLatitude(), is(1574L));
+        assertThat(image.getGeo().getLongitude(), is(99L));
 
-        assertThat(image.getExtension(), is("JPG"));
+        assertThat(image.getCapturedAt(), is(ImageUtils.parseDate("2014年03月13日01时30分30秒").toDate()));
 
-        assertThat(image.getPersistStatus(), is(PersistStatus.NONE));
+
     }
 
     @Test
@@ -60,5 +66,4 @@ public class ImageParserTest {
 
         System.out.println( new Gson().toJson(image));
     }
-
 }
