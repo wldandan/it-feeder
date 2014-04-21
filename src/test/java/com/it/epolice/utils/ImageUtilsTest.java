@@ -1,6 +1,7 @@
 package com.it.epolice.utils;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
 
@@ -22,5 +23,10 @@ public class ImageUtilsTest {
         assertThat(dateTime.getHourOfDay(), is(9));
         assertThat(dateTime.getMinuteOfHour(), is(45));
         assertThat(dateTime.getSecondOfMinute(), is(03));
+    }
+
+    @Test
+    public void testUTCDateConversation() throws Exception {
+        System.out.println(new DateTime(1391246632 * 1000L, DateTimeZone.UTC).toString());
     }
 }

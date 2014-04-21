@@ -1,36 +1,21 @@
-//package com.it.epolice.sync.solr;
-//
-//import com.google.gson.Gson;
-//import com.it.epolice.domain.Image;
-//import org.apache.solr.common.SolrInputDocument;
-//
-//public class SolrDocumentBuilder {
-//
-//    private Gson gson;
-//
-//    public SolrDocumentBuilder() {
-////        this.gson = buildGson();
-//    }
-//
-//    public SolrInputDocument build(Image image) {
-//        SolrInputDocument doc = new SolrInputDocument();
-//        return doc;
-//    }
-//
-////    private Gson buildGson() {
-////        GsonBuilder builder = new GsonBuilder();
-////        builder.registerTypeAdapter(Address.class, new JsonSerializer<Address>() {
-////            @Override
-////            public JsonElement serialize(Address src, Type typeOfSrc, JsonSerializationContext context) {
-////                JsonObject json = new JsonObject();
-////                json.addProperty("postalcode", src.getPostcode());
-////                json.addProperty("streetaddr", src.getStreet());
-////                json.addProperty("country", src.getCountry());
-////                json.addProperty("city", src.getLocality().getName());
-////                json.addProperty("state", src.getSubdivision().getName());
-////                return json;
-////            }
-////        });
-////        return builder.create();
-//    }
-//}
+package com.it.epolice.sync.solr;
+
+import com.it.epolice.domain.Image;
+import org.apache.solr.common.SolrInputDocument;
+
+public class SolrDocumentBuilder {
+
+    public SolrInputDocument build(Image image) {
+        SolrInputDocument doc = new SolrInputDocument();
+        doc.addField("id", image.getImageId());
+        doc.addField("vehicle_number", image.getVehicle().getNumber());
+        doc.addField("title", image.getTitle());
+        doc.addField("path", image.getPath());
+        doc.addField("distributed_path", image.getDistributedPath());
+
+        doc.addField("captured_at", image.getCapturedAt());
+        doc.addField("description", image.getDescription());
+
+        return doc;
+    }
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-ftp="http://www.springframework.org/schema/integration/ftp"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/integration/ftp http://www.springframework.org/schema/integration/ftp/spring-integration-ftp.xsd">
+
+    <bean id="ftpSessionFactory" class="org.springframework.integration.ftp.session.DefaultFtpSessionFactory">
+        <property name="host" value="localhost"/>
+        <property name="username" value="it"/>
+        <property name="password" value="it"/>
+    </bean>
+
+    <bean id="cachingSessionFactory" class="org.springframework.integration.file.remote.session.CachingSessionFactory">
+        <constructor-arg ref="ftpSessionFactory"/>
+        <constructor-arg value="10"/>
+        <property name="sessionWaitTimeout" value="1000"/>
+    </bean>
+
+    <int-ftp:inbound-channel-adapter id="ftpInbound"
+                                     channel="ftpChannel"
+                                     session-factory="ftpSessionFactory"
+                                     charset="UTF-8"
+                                     auto-create-local-directory="true"
+                                     delete-remote-files="false"
+                                     filename-pattern="*.jpg"
+                                     remote-directory="/"
+                                     preserve-timestamp="true"
+                                     local-filename-generator-expression="#this.toUpperCase() + '.a'"
+                                     local-directory="/tmp/image">
+        <int:poller fixed-rate="1000"/>
+    </int-ftp:inbound-channel-adapter>
+
+    <int:channel id="ftpChannel">
+        <int:queue/>
+    </int:channel>
+</beans>

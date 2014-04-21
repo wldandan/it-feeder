@@ -4,6 +4,7 @@ import com.it.epolice.domain.Image;
 import com.it.epolice.domain.ImageStatus;
 import com.it.epolice.sync.ImageHandler;
 import com.it.epolice.utils.ImageUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -50,7 +51,7 @@ public class ImageDistributor implements Distributor, ImageHandler {
         FileOutputStream fos = new FileOutputStream(localFilePath);
         try{
             if (ftpClient.retrieveFile(remoteFilePath, fos)){
-                LOGGER.info("File [" + remoteFilePath + "] has been distributed to [" + localFilePath + "] Successfully");
+                LOGGER.info("File [{}] has been distributed to [{}] Successfully", remoteFilePath, localFilePath);
             }
         }
         finally {
@@ -96,24 +97,28 @@ public class ImageDistributor implements Distributor, ImageHandler {
         showServerReply(ftpClient);
 
         if (!success) {
-            LOGGER.error("Can not login in server with User " + user);
+            LOGGER.error("Can not login in server with User {}",user);
             throw new IOException("Can not login in server with User " + user);
         }
-        LOGGER.info("Login ftp server " + host + " with " + user + " successfully!");
+        LOGGER.info("Login ftp server [{}] with [{}] successfully", host, user);
     }
 
     @Override
     public Boolean distribute(Image image) throws Exception {
+        initDistributePath(image);
 
-        image.setDistributedPath(this.distributionPath + "/" + image.getImageId() + "." + image.getImageExt());
-
-        LOGGER.info("started distribute file from " + image.getSource() + " to " + image.getDistributedPath());
+        LOGGER.info("started distribute file from [{}] to [{}]", image.getPath(), image.getDistributedPath());
         connect();
         downloadFile(image.getPath(), image.getDistributedPath());
-        LOGGER.info("finished distribute file from " + image.getSource() + " to " + image.getDistributedPath());
+        LOGGER.info("finished distribute file from [{}] to [{}]", image.getPath(), image.getDistributedPath());
         image.setDistributedPath(ImageUtils.generateDistributedPath(image));
 
         return true;
+    }
+
+    private void initDistributePath(Image image) throws IOException {
+        FileUtils.forceMkdir(new File(this.distributionPath));
+        image.setDistributedPath(distributionPath + "/" + image.getImageId() + "." + image.getImageExt());
     }
 
     public void disconnect() {
@@ -128,13 +133,13 @@ public class ImageDistributor implements Distributor, ImageHandler {
 
     @Override
     public void start() throws Exception {
-        LOGGER.info("connect to fpt server -" + this.host);
+        LOGGER.info("connect to fpt server [{}]",host);
         this.connect();
     }
 
     @Override
     public void stop(){
-        LOGGER.info("disconnect from ftp server -" + this.host);
+        LOGGER.info("disconnect from ftp server [{}]", host);
 //        disconnect();
     }
 

@@ -15,7 +15,7 @@ public class ImageDistributorTest {
 
     @Before
     public void setUp() throws Exception {
-        distributor = new ImageDistributor("localhost", "it", "it", new FTPClient());
+        distributor = new ImageDistributor("localhost", "it", "it", new FTPClient(), "");
         distributor.connect();
     }
 
