@@ -8,7 +8,6 @@ public class Source {
 
     private String protocol;
 
-    @Indexed(unique = true)
     private String host;
 
     private Integer port;

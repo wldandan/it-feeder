@@ -6,10 +6,8 @@ import org.mongodb.morphia.annotations.Indexed;
 @Embedded
 public class Geo {
 
-    @Indexed(unique = true)
     private Long longitude;
 
-    @Indexed(unique = true)
     private Long latitude;
 
     private String direction;

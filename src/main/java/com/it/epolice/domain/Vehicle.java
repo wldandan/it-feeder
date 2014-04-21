@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Embedded
 public class Vehicle implements Serializable{
 
-    @Indexed(unique = true)
+    @Indexed
     private String number;
 
     private String color;

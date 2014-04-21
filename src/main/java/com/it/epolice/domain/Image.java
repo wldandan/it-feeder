@@ -17,7 +17,7 @@ public class Image implements Serializable {
     @Property("image_id")
     private String imageId;
 
-    @Indexed(unique = true)
+    @Indexed
     private String title;
 
     @Indexed
