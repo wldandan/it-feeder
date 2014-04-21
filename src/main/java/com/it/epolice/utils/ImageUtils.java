@@ -12,7 +12,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class ImageUtils {
 
     public static String generateDistributedPath(Image image){
-        return "/tmp/image" + image.getImageId() + '.' + image.getDistributedPath();
+        return "http://localhost/it-images/" + image.getImageId() + '.' + image.getImageExt();
     }
 
     public static DateTime parseDate(String source){
